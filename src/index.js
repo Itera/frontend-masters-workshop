@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import CustomAvatarGenerator from './CustomAvatarGenerator';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<CustomAvatarGenerator />, document.getElementById('root'));
 registerServiceWorker();
