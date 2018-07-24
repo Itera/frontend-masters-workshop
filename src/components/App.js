@@ -1,95 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import logo from '../logo.svg';
 import './App.css';
 import { AvatarImage } from './AvatarImage';
 import { PartSelection } from './PartSelection';
 
-class App extends Component {
+const App = ({ selected, options, onChange }) => (
+  <div className="App ">
+    <header className="App-header">
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="App-title">Welcome to Workshop</h1>
+    </header>
+    <div>
+      <PartSelection
+        selected={selected.eyes}
+        options={options.eyes}
+        name="eyes"
+        onChange={onChange} />
+      <PartSelection
+        selected={selected.nose}
+        options={options.noses}
+        name="nose"
+        onChange={onChange} />
+      <PartSelection
+        selected={selected.mouth}
+        options={options.mouths}
+        name="mouth"
+        onChange={onChange} />
+      <br />
+      <AvatarImage
+        eyes={selected.eyes}
+        nose={selected.nose}
+        mouth={selected.mouth}
+        color="#0034FF"
+      />
+    </div>
+  </div>
+);
 
-  componentDidMount() {
-    fetch('http://api.myjson.com/bins/9jbc6')
-      .then(response => response.json())
-      .then(json => this.setState({
-        options: {
-          eyes: json.face.eyes,
-          mouths: json.face.mouth,
-          noses: json.face.nose
-        }
-      }))
-      .catch(error => console.error(error));
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      size: 100,
-      username: "Pavol",
-      selected: {
-        eyes: 'eyes1',
-        nose: 'nose2',
-        mouth: 'mouth1'
-      },
-      options: {
-        eyes: [],
-        mouths: [],
-        noses: []
-      }
-    }
-  }
-
-  usernameChanged = (event) => {
-    this.setState({
-      username: event.target.value
-    });
-  }
-
-  sizeChanged = (event) => {
-    this.setState({
-      size: event.target.value
-    });
-  }
-
-  onChange = (event) => {
-    this.setState({
-      selected: {
-        ...this.state.selected,
-        [event.target.name]: event.target.value
-      }
-    })
-  }
-
-  render() {
-    return (
-      <div className="App ">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Workshop</h1>
-        </header>
-        <div>
-          <PartSelection selected={this.state.selected.eyes}
-            options={this.state.options.eyes}
-            name="eyes"
-            onChange={this.onChange} />
-          <PartSelection selected={this.state.selected.nose}
-            options={this.state.options.noses}
-            name="nose"
-            onChange={this.onChange} />
-          <PartSelection selected={this.state.selected.mouth}
-            options={this.state.options.mouths}
-            name="mouth"
-            onChange={this.onChange} />
-          <br />
-          <AvatarImage
-            eyes={this.state.selected.eyes}
-            nose={this.state.selected.nose}
-            mouth={this.state.selected.mouth}
-            color="#0034FF"
-          />
-        </div>
-      </div>
-    );
-  }
+App.propTypes = {
+  selected: PropTypes.shape({
+    eyes: PropTypes.string.isRequired,
+    nose: PropTypes.string.isRequired,
+    mouth: PropTypes.string.isRequired,
+  }).isRequired,
+  options: PropTypes.shape({
+    eyes: PropTypes.arrayOf(PropTypes.string).isRequired,
+    noses: PropTypes.arrayOf(PropTypes.string).isRequired,
+    mouths: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+  onChange: PropTypes.func.isRequired
 }
 
 export default App;
