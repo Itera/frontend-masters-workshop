@@ -1,5 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import AppComponent from '../components/App';
+import {changeSelection} from '../actions';
+
+const mapStateToProps = state => {
+    return {
+        selected: state.selected
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onChange: (event) => dispatch(changeSelection(event))
+    }
+}
 
 class App extends React.Component {
 
@@ -7,17 +21,12 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            selected: {
-                eyes: 'eyes1',
-                nose: 'nose2',
-                mouth: 'mouth1'
-            },
             options: {
                 eyes: [],
                 mouths: [],
                 noses: []
             }
-        }
+        };
     }
 
     componentDidMount() {
@@ -33,19 +42,10 @@ class App extends React.Component {
             .catch(error => console.error(error));
     }
 
-    onChange = (event) => {
-        this.setState({
-            selected: {
-                ...this.state.selected,
-                [event.target.name]: event.target.value
-            }
-        })
-    }
-
     render() {
-        return <AppComponent {...this.state} onChange={this.onChange} />;
+        return <AppComponent {...this.props} {...this.state} />;
     }
 
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
